@@ -1,0 +1,32 @@
+{% load static %}
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>LITReview</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header>
+    <p>LTIReview</p>
+    {% if user.is_authenticated %}
+        <nav>
+            <a class="image" href="#">
+                <img src="{% static 'img/flux.png' %}" width="32px" height="32px" title="Flux">
+            </a>
+            <a class="image" href="#">
+                <img src="{% static 'img/post.png' %}" width="32px" height="32px" title="Posts">
+            </a>
+            <a class="image" href="#">
+                <img src="{% static 'img/abonnement.png' %}" width="32px" height="32px" title="Abonnements">
+            </a>
+            <a class="image" href="{% url 'logout' %}">
+                <img src="{% static 'img/user_unlocked.png' %}" width="32px" height="32px" title="Déconnexion">
+                {{user}}
+            </a>
+        </nav>
+    {% endif %}
+    </header>
+    {% block content %}{% endblock content %}
+</body>
+</html>

@@ -1,0 +1,19 @@
+body {
+    background: white;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: yellow;
+}
+.errorlist {
+    margin-bottom: -10px;
+    color: red;
+}
+a {
+    margin-right: 5px;
+}
+.image {
+    text-decoration: none;
+}
