@@ -11,6 +11,9 @@
     <p>LTIReview</p>
     {% if user.is_authenticated %}
         <nav>
+            <a class="image" href="{% url 'password_change' %}">
+                <img src="{% static 'img/psw_change.png' %}" width="32px" height="32px" title="Changement mot de passe">
+            </a>
             <a class="image" href="#">
                 <img src="{% static 'img/flux.png' %}" width="32px" height="32px" title="Flux">
             </a>
