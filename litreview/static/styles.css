@@ -1,5 +1,6 @@
 body {
     background: white;
+    font-family: sans-serif;
 }
 header {
     display: flex;
@@ -7,13 +8,55 @@ header {
     align-items: center;
     background: yellow;
 }
-.errorlist {
-    margin-bottom: -10px;
-    color: red;
+#message {
+    width: 33%;
+    text-align: left;
+    margin-left: 5px;
+    padding: 5px;
+}
+#titre {
+    width: 33%;
+    text-align: center;
+    font-family: fantasy;
+    font-size: 120%;
+}
+nav {
+    width: 34%;
+    text-align: right;
+}
+#accueil{
+    position: relative;
+    width: 100%;
+}
+#login {
+    position: absolute;
+    top: 70%;
+    left: 0%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#inscription {
+    border: 2px saddleBrown solid;
+    border-radius: 10px;
+    background: white;
+    padding: 15px;
+    margin-left: 15%;
+}
+#connexion {
+    border: 2px saddleBrown solid;
+    border-radius: 10px;
+    background: white;
+    padding: 15px;
+    margin-right: 15%;
+}
+#titre-connexion, #titre-inscription {
+    font-size: 120%;
 }
 a {
     margin-right: 5px;
 }
-.image {
+.image, .bouton-href {
     text-decoration: none;
 }

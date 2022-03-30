@@ -1,10 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <p>{{ message }}</p>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" >Se connecter</button>
-    </form>
-    <p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
+    <div id="accueil">
+        <img src="{% static 'img/bandeau.jpg' %}" alt="livre" width="100%" height="auto">
+        <div id="login">
+            <div id="inscription">
+                <p id="titre-inscription">Inscrivez-vous maintenant !</p>
+                <button>
+                    <a class="bouton-href" href="{% url 'signup' %}">S'inscrire</a>
+                </button>
+            </div>
+            <form id="connexion" method="post">
+                <p id="titre-connexion">Connectez-vous</p>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" >Se connecter</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

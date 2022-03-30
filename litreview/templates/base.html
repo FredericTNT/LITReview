@@ -8,27 +8,33 @@
 </head>
 <body>
     <header>
-    <p>LTIReview</p>
-    {% if user.is_authenticated %}
+        <p id="message">{{message}}</p>
+        <p id="titre">LTIReview</p>
         <nav>
-            <a class="image" href="{% url 'password_change' %}">
-                <img src="{% static 'img/psw_change.png' %}" width="32px" height="32px" title="Changement mot de passe">
-            </a>
-            <a class="image" href="#">
-                <img src="{% static 'img/flux.png' %}" width="32px" height="32px" title="Flux">
-            </a>
-            <a class="image" href="#">
-                <img src="{% static 'img/post.png' %}" width="32px" height="32px" title="Posts">
-            </a>
-            <a class="image" href="#">
-                <img src="{% static 'img/abonnement.png' %}" width="32px" height="32px" title="Abonnements">
-            </a>
-            <a class="image" href="{% url 'logout' %}">
-                <img src="{% static 'img/user_unlocked.png' %}" width="32px" height="32px" title="Déconnexion">
-                {{user}}
-            </a>
+            {% if user.is_authenticated %}
+                <a class="image" href="{% url 'password_change' %}">
+                    <img src="{% static 'img/psw_change.png' %}" alt="changement mot de passe"
+                         width="32px" height="32px" title="Changement mot de passe">
+                </a>
+                <a class="image" href="#">
+                    <img src="{% static 'img/flux.png' %}" alt="flux"
+                         width="32px" height="32px" title="Flux">
+                </a>
+                <a class="image" href="#">
+                    <img src="{% static 'img/post.png' %}" alt="posts"
+                         width="32px" height="32px" title="Posts">
+                </a>
+                <a class="image" href="#">
+                    <img src="{% static 'img/abonnement.png' %}" alt="abonnements"
+                         width="32px" height="32px" title="Abonnements">
+                </a>
+                <a class="image" href="{% url 'logout' %}">
+                    <img src="{% static 'img/user_unlocked.png' %}" alt="déconnexion"
+                         width="32px" height="32px" title="Déconnexion">
+                    {{user}}
+                </a>
+            {% endif %}
         </nav>
-    {% endif %}
     </header>
     {% block content %}{% endblock content %}
 </body>
