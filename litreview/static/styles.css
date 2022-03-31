@@ -1,5 +1,11 @@
+html {
+    background: whitesmoke;
+}
 body {
-    background: white;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    background: ghostWhite;
     font-family: sans-serif;
 }
 header {
@@ -13,6 +19,8 @@ header {
     text-align: left;
     margin-left: 5px;
     padding: 5px;
+    color: saddleBrown;
+    font-family: fantasy;
 }
 #titre {
     width: 33%;
@@ -24,14 +32,7 @@ nav {
     width: 34%;
     text-align: right;
 }
-#accueil{
-    position: relative;
-    width: 100%;
-}
 #login {
-    position: absolute;
-    top: 70%;
-    left: 0%;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -40,23 +41,36 @@ nav {
 #inscription {
     border: 2px saddleBrown solid;
     border-radius: 10px;
-    background: white;
-    padding: 15px;
+    padding: 15px 15px 25px 15px;
+    margin-top: 2%;
     margin-left: 15%;
 }
 #connexion {
     border: 2px saddleBrown solid;
     border-radius: 10px;
-    background: white;
-    padding: 15px;
+    padding: 15px 15px 25px 15px;
+    margin-top: 2%;
     margin-right: 15%;
 }
 #titre-connexion, #titre-inscription {
     font-size: 120%;
 }
-a {
+nav a {
     margin-right: 5px;
 }
-.image, .bouton-href {
+.image {
     text-decoration: none;
+}
+label {
+    display: block;
+}
+.bouton-href {
+    text-decoration: none;
+    color: white;
+}
+button {
+    background: steelBlue;
+    border: 2px steelBlue solid;
+    border-radius: 5px;
+    color: white;
 }

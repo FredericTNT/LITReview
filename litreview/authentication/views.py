@@ -13,7 +13,7 @@ class LoginPageView(View):
 
     def get(self, request):
         form = self.form_class()
-        message = ''
+        message = 'Bienvenue aux critiques littéraires !'
         return render(request, self.template_name, context={'form': form, 'message': message})
 
     def post(self, request):
