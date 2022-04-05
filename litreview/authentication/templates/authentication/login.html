@@ -5,13 +5,13 @@
         <img src="{% static 'img/bandeau.jpg' %}" alt="livre" width="100%" height="auto">
         <div id="login">
             <div id="inscription">
-                <p id="titre-inscription">Inscrivez-vous maintenant !</p>
+                <h3>Inscrivez-vous maintenant !</h3>
                 <button>
                     <a class="bouton-href" href="{% url 'signup' %}">S'inscrire</a>
                 </button>
             </div>
             <form id="connexion" method="post">
-                <p id="titre-connexion">Connectez-vous</p>
+                <h3>Connectez-vous</h3>
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" >Se connecter</button>

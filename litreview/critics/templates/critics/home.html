@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="page">
     <p>Hello world !</p>
     <button>
         <a class="bouton-href" href="{% url 'ticket_create' %}">Demander une critique</a>
     </button>
-
+    <button>
+        <a class="bouton-href" href="{% url 'review_create' %}">Créer une critique</a>
+    </button>
+</div>
 {% endblock content %}

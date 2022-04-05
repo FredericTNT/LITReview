@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 from django.contrib.auth.views import LogoutView, PasswordChangeView
@@ -28,6 +30,10 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('pswchange/', PasswordChangeView.as_view(success_url='/home'), name='password_change'),
     path('signup/', authentication.views.SignupPageView.as_view(), name='signup'),
-    path('home/', critics.views.home, name='home'),
-    path('ticketcreate/', critics.views.ticket_create, name='ticket_create'),
+    path('home/', critics.views.HomeView.as_view(), name='home'),
+    path('ticketcreate/', critics.views.TicketCreateView.as_view(), name='ticket_create'),
+    path('reviewcreate/', critics.views.ReviewCreateView.as_view(), name='review_create'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,5 @@
 html {
-    background: whitesmoke;
+    background: white;
 }
 body {
     max-width: 800px;
@@ -39,21 +39,19 @@ nav {
     align-items: center;
 }
 #inscription {
+    max-width: 20%;
     border: 2px saddleBrown solid;
     border-radius: 10px;
     padding: 15px 15px 25px 15px;
     margin-top: 2%;
-    margin-left: 15%;
+    margin-left: 10%;
 }
 #connexion {
     border: 2px saddleBrown solid;
     border-radius: 10px;
     padding: 15px 15px 25px 15px;
     margin-top: 2%;
-    margin-right: 15%;
-}
-#titre-connexion, #titre-inscription {
-    font-size: 120%;
+    margin-right: 10%;
 }
 nav a {
     margin-right: 5px;
@@ -73,4 +71,15 @@ button {
     border: 2px steelBlue solid;
     border-radius: 5px;
     color: white;
+}
+.page {
+    margin: 10px;
+}
+#id_rating_0 {
+    display: none;
+}
+#id_rating {
+    display: flex;
+    max-width: 40%;
+    justify-content: space-between;
 }

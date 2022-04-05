@@ -5,12 +5,13 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=128, label="Nom utilisateur",
-                               widget=forms.TextInput(attrs={'placeholder': 'votre nom...'}))
-    password = forms.CharField(max_length=128, widget=forms.PasswordInput, label="Mot de passe")
+    username = forms.CharField(max_length=128, label="",
+                               widget=forms.TextInput(attrs={'placeholder': 'Nom utilisateur', 'size': '40'}))
+    password = forms.CharField(max_length=128, label="",
+                               widget=forms.PasswordInput(attrs={'placeholder': 'Mot de passe', 'size': '40'}))
 
 
 class SignupForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ('username', 'profile_photo')
+        fields = ('username', 'password1', 'password2', 'profile_photo')

@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="page">
-    <h2>Demander une critique</h2>
-    <form method="post" enctype="multipart/form-data">
+    <h2>Créer une critique</h2>
+    <form method="post">
         {{ form.as_p }}
         {% csrf_token %}
-        <button type="submit" >Demander</button>
+        <button type="submit" >Envoyer</button>
     </form>
 </div>
 {% endblock content %}
