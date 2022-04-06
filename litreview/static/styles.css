@@ -32,6 +32,9 @@ nav {
     width: 34%;
     text-align: right;
 }
+.info {
+    display: inline;
+}
 #login {
     width: 100%;
     display: flex;
@@ -71,6 +74,7 @@ button {
     border: 2px steelBlue solid;
     border-radius: 5px;
     color: white;
+    font-size: 100%;
 }
 .page {
     margin: 10px;

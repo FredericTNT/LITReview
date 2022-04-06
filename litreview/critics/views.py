@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
+from django.contrib import messages
 from . import forms
 
 
@@ -9,8 +10,7 @@ class HomeView(LoginRequiredMixin, View):
     template_name = 'critics/home.html'
 
     def get(self, request):
-        message = 'Vous êtes connectés !'
-        return render(request, self.template_name, context={'message': message})
+        return render(request, self.template_name)
 
 
 class TicketCreateView(LoginRequiredMixin, View):
@@ -19,8 +19,8 @@ class TicketCreateView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = self.form_class()
-        message = 'Demander une critique'
-        return render(request, self.template_name, context={'form': form, 'message': message})
+        messages.info(request, 'Demander une critique')
+        return render(request, self.template_name, context={'form': form})
 
     def post(self, request):
         form = self.form_class(request.POST, request.FILES)
@@ -28,9 +28,10 @@ class TicketCreateView(LoginRequiredMixin, View):
             ticket = form.save(commit=False)
             ticket.user = request.user
             ticket.save()
+            messages.success(request, 'Demande de critique envoyée')
             return redirect('home')
-        message = ''
-        return render(request, self.template_name, context={'form': form, 'message': message})
+        messages.warning(request, 'Formulaire incomplet !')
+        return render(request, self.template_name, context={'form': form})
 
 
 class ReviewCreateView(LoginRequiredMixin, View):
@@ -39,12 +40,41 @@ class ReviewCreateView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = self.form_class()
-        message = 'Créer une critique'
-        return render(request, self.template_name, context={'form': form, 'message': message})
+        messages.info(request, 'Créer une critique')
+        return render(request, self.template_name, context={'form': form})
 
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
+            messages.success(request, 'Critique pas vraiment enregistrée...')
             return redirect('home')
-        message = ''
-        return render(request, self.template_name, context={'form': form, 'message': message})
+        messages.warning(request, 'Formulaire incomplet !')
+        return render(request, self.template_name, context={'form': form})
+
+
+class CreateTicketReviewView(LoginRequiredMixin, View):
+    template_name = 'critics/create_ticket_review.html'
+    form_ticket = forms.TicketForm
+    form_review = forms.ReviewForm
+
+    def get(self, request):
+        ticket_form = self.form_ticket()
+        review_form = self.form_review()
+        messages.info(request, 'Livre/Article & Critique')
+        return render(request, self.template_name, context={'ticket_form': ticket_form, 'review_form': review_form})
+
+    def post(self, request):
+        ticket_form = self.form_ticket(request.POST, request.FILES)
+        review_form = self.form_review(request.POST)
+        if all([ticket_form.is_valid(), review_form.is_valid()]):
+            ticket = ticket_form.save(commit=False)
+            ticket.user = request.user
+            ticket.save()
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.ticket = ticket
+            review.save()
+            messages.success(request, 'Livre/Article & Critique publiés')
+            return redirect('home')
+        messages.warning(request, 'Formulaire incomplet !')
+        return render(request, self.template_name, context={'ticket_form': ticket_form, 'review_form': review_form})

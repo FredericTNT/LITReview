@@ -4,6 +4,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.views.generic import View
+from django.contrib import messages
 from . import forms
 
 
@@ -13,8 +14,8 @@ class LoginPageView(View):
 
     def get(self, request):
         form = self.form_class()
-        message = 'Bienvenue aux critiques littéraires !'
-        return render(request, self.template_name, context={'form': form, 'message': message})
+        messages.success(request, 'Bienvenue aux critiques littéraires !')
+        return render(request, self.template_name, context={'form': form})
 
     def post(self, request):
         form = self.form_class(request.POST)
@@ -25,9 +26,10 @@ class LoginPageView(View):
             )
             if user is not None:
                 login(request, user)
+                messages.success(request, 'Vous êtes connectés !')
                 return redirect(settings.LOGIN_REDIRECT_URL)
-        message = 'Identifiants invalides'
-        return render(request, self.template_name, context={'form': form, 'message': message})
+        messages.warning(request, 'Identifiants invalides')
+        return render(request, self.template_name, context={'form': form})
 
 
 class SignupPageView(View):
@@ -40,9 +42,10 @@ class SignupPageView(View):
 
     def post(self, request):
         form = self.form_class(request.POST, request.FILES)
-        message = "Nom d'utilisateur ou mot de passe invalide"
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, 'Vous êtes connectés !')
             return redirect(settings.LOGIN_REDIRECT_URL)
-        return render(request, self.template_name, context={'form': form, 'message': message})
+        messages.warning(request, 'Formulaire incomplet !')
+        return render(request, self.template_name, context={'form': form})
