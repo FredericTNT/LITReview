@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from django.contrib import messages
 from . import forms
+from authentication.models import User
 
 
 class HomeView(LoginRequiredMixin, View):
@@ -78,3 +79,25 @@ class CreateTicketReviewView(LoginRequiredMixin, View):
             return redirect('home')
         messages.warning(request, 'Formulaire incomplet !')
         return render(request, self.template_name, context={'ticket_form': ticket_form, 'review_form': review_form})
+
+
+class FollowUsersView(LoginRequiredMixin, View):
+    template_name = 'critics/follow_users.html'
+    form_class = forms.FollowUsersForm
+
+    def get(self, request):
+        form = self.form_class(instance=request.user)
+        followings = request.user.follows.all()
+        followers = request.user.user_set.all()
+        messages.info(request, 'Abonnements')
+        context = {'form': form, 'followings': followings, 'followers': followers}
+        return render(request, self.template_name, context=context)
+
+    def post(self, request):
+        form = self.form_class(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Abonnement enregistré')
+            return redirect('home')
+        messages.warning(request, 'Formulaire incomplet !')
+        return render(request, self.template_name, context={'form': form})

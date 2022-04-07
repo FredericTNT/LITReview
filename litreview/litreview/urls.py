@@ -34,6 +34,7 @@ urlpatterns = [
     path('ticketcreate/', critics.views.TicketCreateView.as_view(), name='ticket_create'),
     path('reviewcreate/', critics.views.ReviewCreateView.as_view(), name='review_create'),
     path('createticketreview/', critics.views.CreateTicketReviewView.as_view(), name='create_ticket_review'),
+    path('followusers/', critics.views.FollowUsersView.as_view(), name='follow_users'),
 ]
 
 if settings.DEBUG:

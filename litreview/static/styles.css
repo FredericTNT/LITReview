@@ -15,7 +15,7 @@ header {
     background: yellow;
 }
 #message {
-    width: 33%;
+    width: 35%;
     text-align: left;
     margin-left: 5px;
     padding: 5px;
@@ -23,17 +23,14 @@ header {
     font-family: fantasy;
 }
 #titre {
-    width: 33%;
+    width: 20%;
     text-align: center;
     font-family: fantasy;
     font-size: 120%;
 }
 nav {
-    width: 34%;
+    width: 45%;
     text-align: right;
-}
-.info {
-    display: inline;
 }
 #login {
     width: 100%;
@@ -62,6 +59,18 @@ nav a {
 .image {
     text-decoration: none;
 }
+#registration-help {
+    display: flex;
+}
+#help-from-registration {
+    border: 1px skyBlue solid;
+    border-radius: 10px;
+    padding: 15px 15px 15px 15px;
+    margin-left: 50px;
+    font-size: 75%;
+    font-style: italic;
+    max-height: 150px;
+}
 label {
     display: block;
 }
@@ -74,7 +83,7 @@ button {
     border: 2px steelBlue solid;
     border-radius: 5px;
     color: white;
-    font-size: 100%;
+    font-size: 90%;
 }
 .page {
     margin: 10px;
@@ -86,4 +95,16 @@ button {
     display: flex;
     max-width: 40%;
     justify-content: space-between;
+}
+#id_title, #id_description, #id_headline, #id_body, #id_follows {
+    width: 75%;
+}
+.tab-followings, .tab-followers {
+    border: 1px black solid;
+    padding: 10px;
+    width: 70%;
+}
+.tableaux {
+    display: flex;
+    flex-direction: column;
 }
