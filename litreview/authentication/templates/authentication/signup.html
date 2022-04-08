@@ -3,34 +3,31 @@
 {% load widget_tweaks %}
 {% load static %}
 <div class="page">
-    <h2>Inscription</h2>
-    <div id="registration-help">
-        <form method="post" enctype="multipart/form-data">
-            <p class="form-group">
-                {% render_field form.username type="text" placeholder="Nom utilisateur" size="50" %}
-            </p>
-            <p class="form-group">
-                {% render_field form.password1 type="password" placeholder="Mot de passe" size="50" %}
-            </p>
-            <p class="form-group">
-                {% render_field form.password2 type="password" placeholder="Confirmation du mot de passe" size="50" %}
-            </p>
-            <p>{{ form.profile_photo.label}} : {{ form.profile_photo }}</p>
-            {% csrf_token %}
-            <button><a class="bouton-href" href="{% url 'login' %}">Annuler</a></button>
-            <button type="submit" >S’inscrire</button>
-        </form>
-        <div id="help-from-registration">
-            <img src="{% static 'img/help.png' %}" alt="aide" width="32px" height="32px">
-            <p>
-                150 caractères maximum pour votre nom utilisateur avec uniquement des lettres, des nombres
+    <h3>Inscription
+        <img id="help" src="{% static 'img/help.png' %}" alt="aide" width="32px" height="32px">
+    </h3>
+    <form method="post" enctype="multipart/form-data">
+        <p>{% render_field form.username type="text" placeholder="Nom utilisateur" size="50" %}</p>
+        <p>{% render_field form.password1 type="password" placeholder="Mot de passe" size="50" %}</p>
+        <p>{% render_field form.password2 type="password" placeholder="Confirmation du mot de passe" size="50" %}</p>
+        <p>{{ form.profile_photo.label}} : {{ form.profile_photo }}</p>
+        {% csrf_token %}
+        <button><a class="bouton-href" href="{% url 'login' %}">Annuler</a></button>
+        <button type="submit" >S’inscrire</button>
+    </form>
+	<div id="myModal" class="help-modal">
+	    <div class="modal-content">
+		    <span class="close">&times;</span>
+            <p class="sousImage">
+                Le nom utilisateur est de 150 caractères maximum avec uniquement des lettres, des nombres
                 et les caractères @ . _ + -
             </p>
             <p>
-                Votre mot de passe doit contenir au moins une lettre majuscule ou minuscule, au minimum 8
+                Le mot de passe est composé au moins d'une lettre majuscule ou minuscule, d'au minimum 8
                 caractères et ne peut pas être un mot de passe couramment utilisé.
             </p>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
+<script src="{% static 'js/helpmodal.js' %}"></script>
 {% endblock content %}
