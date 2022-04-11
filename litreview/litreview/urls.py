@@ -33,8 +33,9 @@ urlpatterns = [
     path('home/', critics.views.HomeView.as_view(), name='home'),
     path('ticketcreate/', critics.views.TicketCreateView.as_view(), name='ticket_create'),
     path('reviewcreate/', critics.views.ReviewCreateView.as_view(), name='review_create'),
-    path('createticketreview/', critics.views.CreateTicketReviewView.as_view(), name='create_ticket_review'),
-    path('followusers/', critics.views.FollowUsersView.as_view(), name='follow_users'),
+    path('ticketreviewcreate/', critics.views.TicketReviewCreateView.as_view(), name='ticket_review_create'),
+    path('userfollow/', critics.views.UserFollowView.as_view(), name='user_follow'),
+    path('userfollow/<int:id>/delete/', critics.views.user_follow_delete, name='user_follow_delete'),
 ]
 
 if settings.DEBUG:

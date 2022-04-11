@@ -16,7 +16,7 @@ class ReviewForm(forms.ModelForm):
         widgets = {'rating': forms.RadioSelect()}
 
 
-class FollowUsersForm(forms.ModelForm):
+class UserFollowForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ['follows']

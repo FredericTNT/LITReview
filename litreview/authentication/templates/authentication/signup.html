@@ -15,17 +15,18 @@
         <button><a class="bouton-href" href="{% url 'login' %}">Annuler</a></button>
         <button type="submit" >S’inscrire</button>
     </form>
-	<div id="myModal" class="help-modal">
+	<div id="helpModal">
 	    <div class="modal-content">
-		    <span class="close">&times;</span>
-            <p class="sousImage">
-                Le nom utilisateur est de 150 caractères maximum avec uniquement des lettres, des nombres
-                et les caractères @ . _ + -
-            </p>
-            <p>
-                Le mot de passe est composé au moins d'une lettre majuscule ou minuscule, d'au minimum 8
-                caractères et ne peut pas être un mot de passe couramment utilisé.
-            </p>
+            <div class="modal-title">
+                <span id="modal-bandeau">Aide</span>
+                <span class="close" title="Fermer">&times;</span>
+            </div>
+            <div class="modal-text">
+                <p> Le nom utilisateur est de 150 caractères maximum avec uniquement des lettres, des nombres
+                    et les caractères @ . _ + - </p>
+                <p> Le mot de passe est composé au moins d'une lettre majuscule ou minuscule, d'au minimum 8
+                    caractères et ne peut pas être un mot de passe couramment utilisé. </p>
+            </div>
 		</div>
 	</div>
 </div>

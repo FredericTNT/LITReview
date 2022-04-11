@@ -1,4 +1,4 @@
-const modal = document.getElementById("myModal");
+const modal = document.getElementById("helpModal");
 
 function initListener() {
 	document.getElementById("help").addEventListener('click', function() {modal.style.display = 'block';});

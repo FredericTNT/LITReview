@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page">
+    <form method="post">
+        <h3>Nouveaux critiques à suivre</h3>
+        {{ form.follows }}
+        {% csrf_token %}
+        <button type="submit" >Suivre</button>
+    </form>
+    <hr>
+    <h3>Vos abonnements</h3>
+    <table>
+        {% for following in followings %}
+            <tr class="tab-followings">
+                <td class="cell-following">{{ following.username }}</td>
+                <td class="cell-no-border"><button>
+                    <a class="bouton-href" href="{% url 'user_follow_delete' following.id %}">Désabonner</a>
+                </button></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    <h3>Vos abonnés</h3>
+    <table>
+        {% for follower in followers %}
+            <tr class="tab-followers">
+                <td class="cell-follower">{{ follower.username }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock content %}

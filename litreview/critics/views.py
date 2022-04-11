@@ -1,6 +1,7 @@
 # critics/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.contrib import messages
 from . import forms
@@ -53,8 +54,8 @@ class ReviewCreateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context={'form': form})
 
 
-class CreateTicketReviewView(LoginRequiredMixin, View):
-    template_name = 'critics/create_ticket_review.html'
+class TicketReviewCreateView(LoginRequiredMixin, View):
+    template_name = 'critics/ticket_review_create.html'
     form_ticket = forms.TicketForm
     form_review = forms.ReviewForm
 
@@ -81,9 +82,9 @@ class CreateTicketReviewView(LoginRequiredMixin, View):
         return render(request, self.template_name, context={'ticket_form': ticket_form, 'review_form': review_form})
 
 
-class FollowUsersView(LoginRequiredMixin, View):
-    template_name = 'critics/follow_users.html'
-    form_class = forms.FollowUsersForm
+class UserFollowView(LoginRequiredMixin, View):
+    template_name = 'critics/user_follow.html'
+    form_class = forms.UserFollowForm
 
     def get(self, request):
         form = self.form_class(instance=request.user)
@@ -96,8 +97,16 @@ class FollowUsersView(LoginRequiredMixin, View):
     def post(self, request):
         form = self.form_class(request.POST, instance=request.user)
         if form.is_valid():
-            form.save()
+            for user in form.cleaned_data['follows']:
+                if user != request.user:
+                    request.user.follows.add(user)
             messages.success(request, 'Abonnement enregistré')
             return redirect('home')
         messages.warning(request, 'Formulaire incomplet !')
         return render(request, self.template_name, context={'form': form})
+
+
+@login_required
+def user_follow_delete(request, id):
+    request.user.follows.remove(User.objects.get(id=id))
+    return redirect('home')
