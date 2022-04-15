@@ -26,7 +26,7 @@ class LoginPageView(View):
             )
             if user is not None:
                 login(request, user)
-                messages.success(request, 'Vous êtes connectés !')
+                messages.success(request, 'Flux des publications')
                 return redirect(settings.LOGIN_REDIRECT_URL)
         messages.warning(request, 'Identifiants invalides')
         return render(request, self.template_name, context={'form': form})

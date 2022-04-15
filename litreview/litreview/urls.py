@@ -30,12 +30,13 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('pswchange/', PasswordChangeView.as_view(success_url='/home'), name='password_change'),
     path('signup/', authentication.views.SignupPageView.as_view(), name='signup'),
-    path('home/', critics.views.HomeView.as_view(), name='home'),
+    path('home/', critics.views.FluxView.as_view(), name='home'),
     path('ticketcreate/', critics.views.TicketCreateView.as_view(), name='ticket_create'),
     path('reviewcreate/', critics.views.ReviewCreateView.as_view(), name='review_create'),
     path('ticketreviewcreate/', critics.views.TicketReviewCreateView.as_view(), name='ticket_review_create'),
     path('userfollow/', critics.views.UserFollowView.as_view(), name='user_follow'),
     path('userfollow/<int:id>/delete/', critics.views.user_follow_delete, name='user_follow_delete'),
+    path('post/', critics.views.PostView.as_view(), name='post'),
 ]
 
 if settings.DEBUG:

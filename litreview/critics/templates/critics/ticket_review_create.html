@@ -8,6 +8,7 @@
         <h3>Critique</h3>
         {{ review_form.as_p }}
         {% csrf_token %}
+        <button><a class="bouton-href" href="{% url 'home' %}">Annuler</a></button>
         <button type="submit" >Publier</button>
     </form>
 </div>

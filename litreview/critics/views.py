@@ -1,18 +1,14 @@
 # critics/views.py
+from itertools import chain
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.contrib import messages
+from django.db.models import Value, CharField, Q, F
 from . import forms
 from authentication.models import User
-
-
-class HomeView(LoginRequiredMixin, View):
-    template_name = 'critics/home.html'
-
-    def get(self, request):
-        return render(request, self.template_name)
+from critics.models import Ticket, Review
 
 
 class TicketCreateView(LoginRequiredMixin, View):
@@ -62,7 +58,7 @@ class TicketReviewCreateView(LoginRequiredMixin, View):
     def get(self, request):
         ticket_form = self.form_ticket()
         review_form = self.form_review()
-        messages.info(request, 'Livre/Article & Critique')
+        messages.info(request, 'Publier une critique')
         return render(request, self.template_name, context={'ticket_form': ticket_form, 'review_form': review_form})
 
     def post(self, request):
@@ -109,4 +105,34 @@ class UserFollowView(LoginRequiredMixin, View):
 @login_required
 def user_follow_delete(request, id):
     request.user.follows.remove(User.objects.get(id=id))
+    messages.success(request, 'Abonnement supprimé')
     return redirect('home')
+
+
+class PostView(LoginRequiredMixin, View):
+    template_name = 'critics/post.html'
+
+    def get(self, request):
+        tickets = Ticket.objects.filter(user=request.user)
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+        reviews = Review.objects.filter(user=request.user)
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+        posts = sorted(chain(tickets, reviews), key=lambda post: post.time_created, reverse=True)
+        messages.info(request, 'Vos publications')
+        return render(request, self.template_name, context={'posts': posts})
+
+
+class FluxView(LoginRequiredMixin, View):
+    template_name = 'critics/flux.html'
+
+    def get(self, request):
+        followings = request.user.follows.all()
+        tickets = Ticket.objects.filter(Q(user=request.user) | Q(user__in=followings))
+        print(tickets)
+        tickets = Ticket.objects.exclude(Q(review__user=F('user')))
+        print(tickets)
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+        reviews = Review.objects.filter(Q(user=request.user) | Q(user__in=followings) | Q(ticket__user=request.user))
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+        posts = sorted(chain(tickets, reviews), key=lambda post: post.time_created, reverse=True)
+        return render(request, self.template_name, context={'posts': posts})

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page">
+    <button>
+        <a class="bouton-href" href="{% url 'ticket_create' %}">Demander une critique</a>
+    </button>
+    <button>
+        <a class="bouton-href" href="{% url 'ticket_review_create' %}">Publier une critique</a>
+    </button>
+    {% if not posts %}
+        <p>Votre flux est vide... publiez ou suivez des critiques !</p>
+    {% endif %}
+    {% for post in posts %}
+        {% if post.content_type == 'TICKET' %}
+            <div class="ticket-post">
+                {% if post.user == request.user %}
+                    <p>Vous avez publié un ticket</p>
+                {% else %}
+                    <p>Ticket publié par {{ post.user.username }}</p>
+                {% endif %}
+                <p class="stamp">{{post.time_created.time|time:"H:i"}}, {{post.time_created.date|date:"l j F Y"}}</p>
+                <p>{{ post.title }}</p>
+                <div class="ticket-content">
+                    {% if post.image %}
+                        <p><img src="{{ post.image.url}}" alt="Livre/Article" height="128px"></p>
+                    {% endif %}
+                    <p class="ticket-description">{{ post.description }}</p>
+                </div>
+                <div class="bouton-post">
+                    <button>
+                        <a class="bouton-href" href="#">créer une critique</a>
+                    </button>
+                </div>
+            </div>
+        {% elif post.content_type == 'REVIEW' %}
+            <div class="review-post">
+                {% if post.user == request.user %}
+                    <p>Vous avez publié une critique</p>
+                {% else %}
+                    <p>Critique publiée par {{ post.user.username }}</p>
+                {% endif %}
+                <p class="stamp">{{post.time_created.time|time:"H:i"}}, {{post.time_created.date|date:"l j F Y"}}</p>
+                <p>
+                    {{ post.headline }} -
+                    {% if post.rating == 0 %}
+                        <span class="star">&#x2606&#x2606&#x2606&#x2606&#x2606</span>
+                    {% elif post.rating == 1 %}
+                        <span class="star">&#x2605&#x2606&#x2606&#x2606&#x2606</span>
+                    {% elif post.rating == 2 %}
+                        <span class="star">&#x2605&#x2605&#x2606&#x2606&#x2606</span>
+                    {% elif post.rating == 3 %}
+                        <span class="star">&#x2605&#x2605&#x2605&#x2606&#x2606</span>
+                    {% elif post.rating == 4 %}
+                        <span class="star">&#x2605&#x2605&#x2605&#x2605&#x2606</span>
+                    {% elif post.rating == 5 %}
+                        <span class="star">&#x2605&#x2605&#x2605&#x2605&#x2605</span>
+                    {% endif %}
+                </p>
+                <p class="review-body">{{ post.body }}</p>
+                <div class="ticket-post">
+                    {% if post.ticket.user == request.user %}
+                        <p>Votre ticket</p>
+                    {% else %}
+                        <p>Ticket publié par {{post.ticket.user.username}}</p>
+                    {% endif %}
+                    <p>{{ post.ticket.title }}</p>
+                    <div class="ticket-content">
+                        {% if post.ticket.image %}
+                            <p><img src="{{ post.ticket.image.url}}" alt="Livre/Article" height="128px"></p>
+                        {% endif %}
+                        <p class="ticket-description">{{ post.ticket.description }}</p>
+                    </div>
+                    {% if post.ticket.user != request.user %}
+                        <div class="bouton-post">
+                            <button>
+                                <a class="bouton-href" href="#">créer une critique</a>
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock content %}
