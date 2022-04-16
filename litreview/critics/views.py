@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.contrib import messages
-from django.db.models import Value, CharField, Q, F
+from django.db.models import Value, CharField, Q
 from . import forms
 from authentication.models import User
 from critics.models import Ticket, Review
@@ -114,8 +114,8 @@ class PostView(LoginRequiredMixin, View):
 
     def get(self, request):
         tickets = Ticket.objects.filter(user=request.user)
-        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
         reviews = Review.objects.filter(user=request.user)
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
         posts = sorted(chain(tickets, reviews), key=lambda post: post.time_created, reverse=True)
         messages.info(request, 'Vos publications')
@@ -127,12 +127,9 @@ class FluxView(LoginRequiredMixin, View):
 
     def get(self, request):
         followings = request.user.follows.all()
-        tickets = Ticket.objects.filter(Q(user=request.user) | Q(user__in=followings))
-        print(tickets)
-        tickets = Ticket.objects.exclude(Q(review__user=F('user')))
-        print(tickets)
-        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
         reviews = Review.objects.filter(Q(user=request.user) | Q(user__in=followings) | Q(ticket__user=request.user))
+        tickets = Ticket.objects.filter(Q(user=request.user) | Q(user__in=followings)).exclude(Q(review__in=reviews))
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
         posts = sorted(chain(tickets, reviews), key=lambda post: post.time_created, reverse=True)
         return render(request, self.template_name, context={'posts': posts})

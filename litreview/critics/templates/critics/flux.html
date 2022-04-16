@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load critics_extras %}
 {% block content %}
 <div class="page">
     <button>
@@ -18,7 +19,7 @@
                 {% else %}
                     <p>Ticket publié par {{ post.user.username }}</p>
                 {% endif %}
-                <p class="stamp">{{post.time_created.time|time:"H:i"}}, {{post.time_created.date|date:"l j F Y"}}</p>
+                <p class="stamp">{{post.time_created|date:"H:i, l j F Y"}}</p>
                 <p>{{ post.title }}</p>
                 <div class="ticket-content">
                     {% if post.image %}
@@ -39,7 +40,7 @@
                 {% else %}
                     <p>Critique publiée par {{ post.user.username }}</p>
                 {% endif %}
-                <p class="stamp">{{post.time_created.time|time:"H:i"}}, {{post.time_created.date|date:"l j F Y"}}</p>
+                <p class="stamp">{{post.time_created|date:"H:i, l j F Y"}}</p>
                 <p>
                     {{ post.headline }} -
                     {% if post.rating == 0 %}
@@ -70,10 +71,10 @@
                         {% endif %}
                         <p class="ticket-description">{{ post.ticket.description }}</p>
                     </div>
-                    {% if post.ticket.user != request.user %}
+                    {% if not post.ticket|review_user:request.user %}
                         <div class="bouton-post">
                             <button>
-                                <a class="bouton-href" href="#">créer une critique</a>
+                                <a class="bouton-href" href="#">Créer une critique</a>
                             </button>
                         </div>
                     {% endif %}
