@@ -1,0 +1,25 @@
+<div class="review-partial">
+    {% if review.user == request.user %}
+        <p>Vous avez publié une critique</p>
+    {% else %}
+        <p>Critique publiée par {{ review.user.username }}</p>
+    {% endif %}
+    <p class="stamp">{{review.time_created|date:"H:i, l j F Y"}}</p>
+    <p>
+        {{ review.headline }} -
+        {% if review.rating == 0 %}
+            <span class="star">&#x2606&#x2606&#x2606&#x2606&#x2606</span>
+        {% elif review.rating == 1 %}
+            <span class="star">&#x2605&#x2606&#x2606&#x2606&#x2606</span>
+        {% elif review.rating == 2 %}
+            <span class="star">&#x2605&#x2605&#x2606&#x2606&#x2606</span>
+        {% elif review.rating == 3 %}
+            <span class="star">&#x2605&#x2605&#x2605&#x2606&#x2606</span>
+        {% elif review.rating == 4 %}
+            <span class="star">&#x2605&#x2605&#x2605&#x2605&#x2606</span>
+        {% elif review.rating == 5 %}
+            <span class="star">&#x2605&#x2605&#x2605&#x2605&#x2605</span>
+        {% endif %}
+    </p>
+    <p class="review-body">{{ review.body }}</p>
+</div>

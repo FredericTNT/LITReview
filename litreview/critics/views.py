@@ -5,7 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.contrib import messages
-from django.db.models import Value, CharField, Q
+from django.db.models import Q
+from django.core.paginator import Paginator
 from . import forms
 from authentication.models import User
 from critics.models import Ticket, Review
@@ -36,18 +37,24 @@ class ReviewCreateView(LoginRequiredMixin, View):
     template_name = 'critics/review_create.html'
     form_class = forms.ReviewForm
 
-    def get(self, request):
+    def get(self, request, id):
         form = self.form_class()
+        ticket = Ticket.objects.get(id=id)
         messages.info(request, 'Créer une critique')
-        return render(request, self.template_name, context={'form': form})
+        return render(request, self.template_name, context={'form': form, 'ticket': ticket})
 
-    def post(self, request):
+    def post(self, request, id):
         form = self.form_class(request.POST)
+        ticket = Ticket.objects.get(id=id)
         if form.is_valid():
-            messages.success(request, 'Critique pas vraiment enregistrée...')
+            review = form.save(commit=False)
+            review.user = request.user
+            review.ticket = ticket
+            review.save()
+            messages.success(request, 'Critique publiée')
             return redirect('home')
         messages.warning(request, 'Formulaire incomplet !')
-        return render(request, self.template_name, context={'form': form})
+        return render(request, self.template_name, context={'form': form, 'ticket': ticket})
 
 
 class TicketReviewCreateView(LoginRequiredMixin, View):
@@ -109,14 +116,26 @@ def user_follow_delete(request, id):
     return redirect('home')
 
 
+@login_required
+def ticket_delete(request, id):
+    Ticket.objects.get(id=id).delete()
+    messages.success(request, 'Ticket supprimé')
+    return redirect('home')
+
+
+@login_required
+def review_delete(request, id):
+    Review.objects.get(id=id).delete()
+    messages.success(request, 'Critique supprimée')
+    return redirect('home')
+
+
 class PostView(LoginRequiredMixin, View):
     template_name = 'critics/post.html'
 
     def get(self, request):
         tickets = Ticket.objects.filter(user=request.user)
         reviews = Review.objects.filter(user=request.user)
-        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
-        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
         posts = sorted(chain(tickets, reviews), key=lambda post: post.time_created, reverse=True)
         messages.info(request, 'Vos publications')
         return render(request, self.template_name, context={'posts': posts})
@@ -129,7 +148,10 @@ class FluxView(LoginRequiredMixin, View):
         followings = request.user.follows.all()
         reviews = Review.objects.filter(Q(user=request.user) | Q(user__in=followings) | Q(ticket__user=request.user))
         tickets = Ticket.objects.filter(Q(user=request.user) | Q(user__in=followings)).exclude(Q(review__in=reviews))
-        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
-        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
         posts = sorted(chain(tickets, reviews), key=lambda post: post.time_created, reverse=True)
-        return render(request, self.template_name, context={'posts': posts})
+        paginator = Paginator(posts, 4)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, self.template_name, context={'page_obj': page_obj})
+
+

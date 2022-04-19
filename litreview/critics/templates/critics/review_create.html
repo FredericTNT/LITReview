@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="page">
-    <h2>Créer une critique</h2>
+    <div class="ticket-post">
+        {% include 'critics/partials/ticket_snippet.html' %}
+    </div>
+    <hr>
     <form method="post">
+        <h3>Critique en réponse à la demande</h3>
         {{ form.as_p }}
         {% csrf_token %}
-        <button type="submit" >Envoyer</button>
+        <button><a class="bouton-href" href="{% url 'home' %}">Annuler</a></button>
+        <button type="submit" >Publier</button>
     </form>
 </div>
 {% endblock content %}

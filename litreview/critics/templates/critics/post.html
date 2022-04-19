@@ -1,78 +1,35 @@
 {% extends 'base.html' %}
+{% load critics_extras %}
 {% block content %}
 <div class="page">
     {% if not posts %}
         <p>Vous n'avez encore rien publié... à vos critiques !</p>
     {% endif %}
     {% for post in posts %}
-        {% if post.content_type == 'TICKET' %}
+        {% if post|model_type == 'Ticket' %}
             <div class="ticket-post">
-                {% if post.user == request.user %}
-                    <p>Vous avez publié un ticket</p>
-                {% else %}
-                    <p>Ticket publié par {{ post.user.username }}</p>
-                {% endif %}
-                <p class="stamp">{{post.time_created.time|time:"H:i"}}, {{post.time_created.date|date:"l j F Y"}}</p>
-                <p>{{ post.title }}</p>
-                <div class="ticket-content">
-                    {% if post.image %}
-                        <p><img src="{{ post.image.url}}" alt="Livre/Article" height="128px"></p>
-                    {% endif %}
-                    <p class="ticket-description">{{ post.description }}</p>
-                </div>
+                {% include 'critics/partials/ticket_snippet.html' with ticket=post %}
                 <div class="bouton-post">
                     <button>
                         <a class="bouton-href" href="#">Modifier</a>
                     </button>
                     <button>
-                        <a class="bouton-href" href="#">Supprimer</a>
+                        <a class="bouton-href" href="{% url 'ticket_delete' post.id %}">Supprimer</a>
                     </button>
                 </div>
             </div>
-        {% elif post.content_type == 'REVIEW' %}
+        {% elif post|model_type == 'Review' %}
             <div class="review-post">
-                {% if post.user == request.user %}
-                    <p>Vous avez publié une critique</p>
-                {% else %}
-                    <p>Critique publiée par {{ post.user.username }}</p>
-                {% endif %}
-                <p class="stamp">{{post.time_created.time|time:"H:i"}}, {{post.time_created.date|date:"l j F Y"}}</p>
-                <p>
-                    {{ post.headline }} -
-                    {% if post.rating == 0 %}
-                        <span class="star">&#x2606&#x2606&#x2606&#x2606&#x2606</span>
-                    {% elif post.rating == 1 %}
-                        <span class="star">&#x2605&#x2606&#x2606&#x2606&#x2606</span>
-                    {% elif post.rating == 2 %}
-                        <span class="star">&#x2605&#x2605&#x2606&#x2606&#x2606</span>
-                    {% elif post.rating == 3 %}
-                        <span class="star">&#x2605&#x2605&#x2605&#x2606&#x2606</span>
-                    {% elif post.rating == 4 %}
-                        <span class="star">&#x2605&#x2605&#x2605&#x2605&#x2606</span>
-                    {% elif post.rating == 5 %}
-                        <span class="star">&#x2605&#x2605&#x2605&#x2605&#x2605</span>
-                    {% endif %}
-                </p>
+                {% include 'critics/partials/review_snippet.html' with review=post %}
                 <div class="ticket-post">
-                    {% if post.ticket.user == request.user %}
-                        <p>Votre ticket</p>
-                    {% else %}
-                        <p>Ticket publié par {{post.ticket.user.username}}</p>
-                    {% endif %}
-                    <p>{{ post.ticket.title }}</p>
-                    <div class="ticket-content">
-                        {% if post.ticket.image %}
-                            <p><img src="{{ post.ticket.image.url}}" alt="Livre/Article" height="128px"></p>
-                        {% endif %}
-                        <p class="ticket-description">{{ post.ticket.description }}</p>
-                    </div>
+                    {% include 'critics/partials/ticket_snippet.html' with ticket=post.ticket %}
                 </div>
                 <div class="bouton-post">
                     <button>
                         <a class="bouton-href" href="#">Modifier</a>
                     </button>
                     <button>
-                        <a class="bouton-href" href="#">Supprimer</a>
+                        <a class="bouton-href" href="{% url 'review_delete' post.id %}">Supprimer</a>
                     </button>
                 </div>
             </div>

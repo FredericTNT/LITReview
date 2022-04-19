@@ -1,0 +1,15 @@
+<div class="ticket-partial">
+    {% if ticket.user == request.user %}
+        <p>Vous avez publié un ticket</p>
+    {% else %}
+        <p>Ticket publié par {{ ticket.user.username }}</p>
+    {% endif %}
+    <p class="stamp">{{ticket.time_created|date:"H:i, l j F Y"}}</p>
+    <p>{{ ticket.title }}</p>
+    <div class="ticket-content">
+        {% if ticket.image %}
+            <p><img src="{{ ticket.image.url}}" alt="Livre/Article" height="128px"></p>
+        {% endif %}
+        <p class="ticket-description">{{ ticket.description }}</p>
+    </div>
+</div>
