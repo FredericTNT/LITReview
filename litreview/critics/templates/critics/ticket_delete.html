@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-confirmation">
+    <form method="post">
+        <div class="text-confirmation">
+            <p> La suppression du ticket "{{ ticket.title }}" entraine également la suppression de toutes
+                les critiques publiées en réponse à celui-ci. </p>
+            <p> Confirmez-vous la demande ? </p>
+        </div>
+        {% csrf_token %}
+        <div class="button-confirmation">
+            <button><a class="bouton-href" href="{% url 'post' %}">Non, retour page précédente</a></button>
+            <button type="submit" >Oui, je confirme la suppression</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

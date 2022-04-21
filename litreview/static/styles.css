@@ -213,3 +213,19 @@ td {
     padding: 3px;
     font-size: 0.8em;
 }
+.page-confirmation {
+    width: 600px;
+    margin: auto;
+}
+.text-confirmation {
+    border: 1px red solid;
+    border-radius: 3px;
+    background: white;
+    margin: 15px 0px 10px 0px;
+    padding : 0px 5px 0px 5px;
+    font-style: italic;
+    text-align: center;
+}
+.button-confirmation {
+    text-align: center;
+}

@@ -11,7 +11,7 @@
                 {% include 'critics/partials/ticket_snippet.html' with ticket=post %}
                 <div class="bouton-post">
                     <button>
-                        <a class="bouton-href" href="#">Modifier</a>
+                        <a class="bouton-href" href="{% url 'ticket_update' post.id %}">Modifier</a>
                     </button>
                     <button>
                         <a class="bouton-href" href="{% url 'ticket_delete' post.id %}">Supprimer</a>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="bouton-post">
                     <button>
-                        <a class="bouton-href" href="#">Modifier</a>
+                        <a class="bouton-href" href="{% url 'review_update' post.id %}">Modifier</a>
                     </button>
                     <button>
                         <a class="bouton-href" href="{% url 'review_delete' post.id %}">Supprimer</a>

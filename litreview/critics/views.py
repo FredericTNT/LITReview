@@ -33,6 +33,42 @@ class TicketCreateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context={'form': form})
 
 
+class TicketUpdateView(LoginRequiredMixin, View):
+    template_name = 'critics/ticket_create.html'
+    form_class = forms.TicketForm
+
+    def get(self, request, id):
+        print(request)
+        ticket = Ticket.objects.get(id=id)
+        form = self.form_class(instance=ticket)
+        messages.info(request, 'Mettre à jour le ticket')
+        return render(request, self.template_name, context={'form': form})
+
+    def post(self, request, id):
+        ticket = Ticket.objects.get(id=id)
+        form = self.form_class(request.POST, request.FILES, instance=ticket)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Ticket mis à jour')
+            return redirect('home')
+        messages.warning(request, 'Formulaire incomplet !')
+        return render(request, self.template_name, context={'form': form})
+
+
+class TicketDeleteView(LoginRequiredMixin, View):
+    template_name = 'critics/ticket_delete.html'
+
+    def get(self, request, id):
+        ticket = Ticket.objects.get(id=id)
+        messages.info(request, 'Confirmer la suppression')
+        return render(request, self.template_name, context={'ticket': ticket})
+
+    def post(self, request, id):
+        Ticket.objects.get(id=id).delete()
+        messages.success(request, 'Ticket supprimé')
+        return redirect('home')
+
+
 class ReviewCreateView(LoginRequiredMixin, View):
     template_name = 'critics/review_create.html'
     form_class = forms.ReviewForm
@@ -55,6 +91,27 @@ class ReviewCreateView(LoginRequiredMixin, View):
             return redirect('home')
         messages.warning(request, 'Formulaire incomplet !')
         return render(request, self.template_name, context={'form': form, 'ticket': ticket})
+
+
+class ReviewUpdateView(LoginRequiredMixin, View):
+    template_name = 'critics/review_create.html'
+    form_class = forms.ReviewForm
+
+    def get(self, request, id):
+        review = Review.objects.get(id=id)
+        form = self.form_class(instance=review)
+        messages.info(request, 'Mettre à jour la critique')
+        return render(request, self.template_name, context={'form': form, 'ticket': review.ticket})
+
+    def post(self, request, id):
+        review = Review.objects.get(id=id)
+        form = self.form_class(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Critique mise à jour')
+            return redirect('home')
+        messages.warning(request, 'Formulaire incomplet !')
+        return render(request, self.template_name, context={'form': form, 'ticket': review.ticket})
 
 
 class TicketReviewCreateView(LoginRequiredMixin, View):
@@ -117,13 +174,6 @@ def user_follow_delete(request, id):
 
 
 @login_required
-def ticket_delete(request, id):
-    Ticket.objects.get(id=id).delete()
-    messages.success(request, 'Ticket supprimé')
-    return redirect('home')
-
-
-@login_required
 def review_delete(request, id):
     Review.objects.get(id=id).delete()
     messages.success(request, 'Critique supprimée')
@@ -153,5 +203,3 @@ class FluxView(LoginRequiredMixin, View):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, self.template_name, context={'page_obj': page_obj})
-
-
