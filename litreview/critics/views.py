@@ -13,6 +13,7 @@ from critics.models import Ticket, Review
 
 
 class TicketCreateView(LoginRequiredMixin, View):
+    """ Publier un ticket """
     template_name = 'critics/ticket_create.html'
     form_class = forms.TicketForm
 
@@ -34,6 +35,7 @@ class TicketCreateView(LoginRequiredMixin, View):
 
 
 class TicketUpdateView(LoginRequiredMixin, View):
+    """ Mettre à jour un ticket """
     template_name = 'critics/ticket_create.html'
     form_class = forms.TicketForm
 
@@ -56,6 +58,7 @@ class TicketUpdateView(LoginRequiredMixin, View):
 
 
 class TicketDeleteView(LoginRequiredMixin, View):
+    """ Supprimer un ticket avec demande de confirmation """
     template_name = 'critics/ticket_delete.html'
 
     def get(self, request, id):
@@ -70,6 +73,7 @@ class TicketDeleteView(LoginRequiredMixin, View):
 
 
 class ReviewCreateView(LoginRequiredMixin, View):
+    """ Publier une critique en réponse à un ticket """
     template_name = 'critics/review_create.html'
     form_class = forms.ReviewForm
 
@@ -94,6 +98,7 @@ class ReviewCreateView(LoginRequiredMixin, View):
 
 
 class ReviewUpdateView(LoginRequiredMixin, View):
+    """ Mettre à jour une critique """
     template_name = 'critics/review_create.html'
     form_class = forms.ReviewForm
 
@@ -115,6 +120,7 @@ class ReviewUpdateView(LoginRequiredMixin, View):
 
 
 class TicketReviewCreateView(LoginRequiredMixin, View):
+    """ Publier un ticket et une critique (processus unique) """
     template_name = 'critics/ticket_review_create.html'
     form_ticket = forms.TicketForm
     form_review = forms.ReviewForm
@@ -143,6 +149,7 @@ class TicketReviewCreateView(LoginRequiredMixin, View):
 
 
 class UserFollowView(LoginRequiredMixin, View):
+    """ Gérer les abonnements """
     template_name = 'critics/user_follow.html'
     form_class = forms.UserFollowForm
 
@@ -168,6 +175,7 @@ class UserFollowView(LoginRequiredMixin, View):
 
 @login_required
 def user_follow_delete(request, id):
+    """ Supprimer un abonnement sans confirmation """
     request.user.follows.remove(User.objects.get(id=id))
     messages.success(request, 'Abonnement supprimé')
     return redirect('home')
@@ -175,12 +183,14 @@ def user_follow_delete(request, id):
 
 @login_required
 def review_delete(request, id):
+    """ Supprimer une critique sans confirmation """
     Review.objects.get(id=id).delete()
     messages.success(request, 'Critique supprimée')
     return redirect('home')
 
 
 class PostView(LoginRequiredMixin, View):
+    """ Afficher les publications de l'utilisateur """
     template_name = 'critics/post.html'
 
     def get(self, request):
@@ -192,6 +202,7 @@ class PostView(LoginRequiredMixin, View):
 
 
 class FluxView(LoginRequiredMixin, View):
+    """ Afficher le flux de l'utilisateur """
     template_name = 'critics/flux.html'
 
     def get(self, request):

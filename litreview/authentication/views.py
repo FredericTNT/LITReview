@@ -9,6 +9,7 @@ from . import forms
 
 
 class LoginPageView(View):
+    """ Connecter un utilisateur """
     template_name = 'authentication/login.html'
     form_class = forms.LoginForm
 
@@ -33,6 +34,7 @@ class LoginPageView(View):
 
 
 class SignupPageView(View):
+    """ Inscrire un utilisateur """
     template_name = 'authentication/signup.html'
     form_class = forms.SignupForm
 

@@ -1,10 +1,10 @@
 from django.db import models
 from django.conf import settings
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 
 
 class Ticket(models.Model):
+    """ Modèle Ticket """
     title = models.CharField(max_length=128, verbose_name="Titre")
     description = models.TextField(max_length=2048, blank=True, verbose_name="Description")
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -13,6 +13,7 @@ class Ticket(models.Model):
 
 
 class Review(models.Model):
+    """ Modèle Critique """
 
     class Notation(models.IntegerChoices):
         ZERO = 0, _('0')

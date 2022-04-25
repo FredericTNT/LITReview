@@ -4,12 +4,14 @@ from . import models
 
 
 class TicketForm(forms.ModelForm):
+    """ Formulaire Ticket """
     class Meta:
         model = models.Ticket
         fields = ['title', 'description', 'image']
 
 
 class ReviewForm(forms.ModelForm):
+    """ Formulaire Critique """
     class Meta:
         model = models.Review
         fields = ['headline', 'rating', 'body']
@@ -17,6 +19,7 @@ class ReviewForm(forms.ModelForm):
 
 
 class UserFollowForm(forms.ModelForm):
+    """ Formulaire Abonnement """
     class Meta:
         model = get_user_model()
         fields = ['follows']
