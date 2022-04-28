@@ -43,7 +43,7 @@
             <a class="image" href="?page=1">&#x27ea &nbsp</a>
             <a class="image" href="?page={{ page_obj.previous_page_number }}">&#x27e8 &nbsp</a>
         {% endif %}
-        <span class="text-page">page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        <span class="text-page">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
         {% if page_obj.has_next %}
             <a class="image" href="?page={{ page_obj.next_page_number }}">&nbsp &#x27e9</a>
             <a class="image" href="?page={{ page_obj.paginator.num_pages }}">&nbsp &#x27eb</a>

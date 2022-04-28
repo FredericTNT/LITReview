@@ -11,6 +11,9 @@ class Ticket(models.Model):
     image = models.ImageField(null=True, blank=True, verbose_name="Photo du livre ou de l'article")
     time_created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.title}'
+
 
 class Review(models.Model):
     """ Modèle Critique """
@@ -30,3 +33,6 @@ class Review(models.Model):
     body = models.TextField(max_length=8192, blank=True, verbose_name='Commentaire')
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.ticket.title} par {self.user.username}'
