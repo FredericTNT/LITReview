@@ -20,11 +20,12 @@ ou d'articles.
 ## Technologies
 ***
 Technologies ou packages majeurs utilisés dans ce projet :
-* [Windows 10 Famille](https://docs.microsoft.com/fr-fr/windows/whats-new/whats-new-windows-10-version-21h2) : version 21H2 
-* [Python](https://docs.python.org/fr/3.10/) : version 3.10.0
-* [Django](https://docs.djangoproject.com/fr/4.0/) : version 4.0.3
-* [Pillow](https://pillow.readthedocs.io/en/stable/index.html) : version 9.0.1
-* [Django-widget-tweaks](https://pypi.org/project/django-widget-tweaks/) : version 1.4.12
+* [windows 10 Famille](https://docs.microsoft.com/fr-fr/windows/whats-new/whats-new-windows-10-version-21h2) : version 21H2 
+* [python](https://docs.python.org/fr/3.10/) : version 3.10.0
+* [django](https://docs.djangoproject.com/fr/4.0/) : version 4.0.3
+* [pillow](https://pillow.readthedocs.io/en/stable/index.html) : version 9.0.1
+* [django-widget-tweaks](https://pypi.org/project/django-widget-tweaks/) : version 1.4.12
+* [rules](https://pypi.org/project/rules/) : version 3.3
 
 ## Installation
 ***
@@ -70,7 +71,7 @@ La vérification de conformité du code aux directives PEP 8 peut s'effectuer en
 à partir du répertoire courant LITReview avec les paramètres suivants et l'installation préalable des deux modules 
 flake8 et flake8-html dans l'environnement virtuel activé :
 ```
-(venv)$ pip install flake-8
+(venv)$ pip install flake8
 (venv)$ pip install flake8-html
 
 (venv)$ venv\scripts\flake8.exe --show-source --statistics --max-line-length=120 --exclude=litreview\*\migrations --format=html --htmldir=flake8_rapport litreview\

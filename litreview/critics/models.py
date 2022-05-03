@@ -7,12 +7,12 @@ from django.utils.translation import gettext_lazy as _
 
 @rules.predicate
 def is_ticket_author(user, ticket):
-    """ Verifier si l'utilisateur est l'auteur du ticket"""
+    """ Verifier si l'utilisateur est l'auteur du ticket """
     return ticket.user == user
 
 
 class Ticket(RulesModel):
-    """ Modèle Ticket étendu aux permissions du package rules"""
+    """ Modèle Ticket étendu aux permissions du package rules """
 
     class Meta:
         rules_permissions = {
@@ -34,12 +34,12 @@ class Ticket(RulesModel):
 
 @rules.predicate
 def is_review_author(user, review):
-    """ Verifier si l'utilisateur est l'auteur de la critique"""
+    """ Verifier si l'utilisateur est l'auteur de la critique """
     return review.user == user
 
 
 class Review(RulesModel):
-    """ Modèle Critique """
+    """ Modèle Critique étendu aux permissions du package rules """
 
     class Meta:
         rules_permissions = {
