@@ -1,10 +1,27 @@
+import rules
 from django.db import models
+from rules.contrib.models import RulesModel
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 
-class Ticket(models.Model):
-    """ Modèle Ticket """
+@rules.predicate
+def is_ticket_author(user, ticket):
+    """ Verifier si l'utilisateur est l'auteur du ticket"""
+    return ticket.user == user
+
+
+class Ticket(RulesModel):
+    """ Modèle Ticket étendu aux permissions du package rules"""
+
+    class Meta:
+        rules_permissions = {
+            "add": rules.is_authenticated,
+            "view": rules.is_authenticated,
+            "change": is_ticket_author,
+            "delete": is_ticket_author,
+        }
+
     title = models.CharField(max_length=128, verbose_name="Titre")
     description = models.TextField(max_length=2048, blank=True, verbose_name="Description")
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -12,11 +29,25 @@ class Ticket(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.title}'
+        return f'{self.id}- {self.title}'
 
 
-class Review(models.Model):
+@rules.predicate
+def is_review_author(user, review):
+    """ Verifier si l'utilisateur est l'auteur de la critique"""
+    return review.user == user
+
+
+class Review(RulesModel):
     """ Modèle Critique """
+
+    class Meta:
+        rules_permissions = {
+            "add": rules.is_authenticated,
+            "view": rules.is_authenticated,
+            "change": is_review_author,
+            "delete": is_review_author,
+        }
 
     class Notation(models.IntegerChoices):
         ZERO = 0, _('0')
@@ -35,4 +66,4 @@ class Review(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.ticket.title} par {self.user.username}'
+        return f'{self.id}- {self.ticket.title} par {self.user.username}'

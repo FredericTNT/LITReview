@@ -1,8 +1,10 @@
 # critics/views.py
 from itertools import chain
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from rules.contrib.views import permission_required, objectgetter
 from django.views.generic import View
 from django.contrib import messages
 from django.db.models import Q
@@ -12,7 +14,8 @@ from authentication.models import User
 from critics.models import Ticket, Review
 
 
-class TicketCreateView(LoginRequiredMixin, View):
+@method_decorator(permission_required('critics.add_ticket'), name='dispatch')
+class TicketCreateView(View):
     """ Publier un ticket """
     template_name = 'critics/ticket_create.html'
     form_class = forms.TicketForm
@@ -34,13 +37,13 @@ class TicketCreateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context={'form': form})
 
 
-class TicketUpdateView(LoginRequiredMixin, View):
+@method_decorator(permission_required('critics.change_ticket', fn=objectgetter(Ticket, 'id')), name='dispatch')
+class TicketUpdateView(View):
     """ Mettre à jour un ticket """
     template_name = 'critics/ticket_create.html'
     form_class = forms.TicketForm
 
     def get(self, request, id):
-        print(request)
         ticket = Ticket.objects.get(id=id)
         form = self.form_class(instance=ticket)
         messages.info(request, 'Mettre à jour le ticket')
@@ -57,7 +60,8 @@ class TicketUpdateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context={'form': form})
 
 
-class TicketDeleteView(LoginRequiredMixin, View):
+@method_decorator(permission_required('critics.delete_ticket', fn=objectgetter(Ticket, 'id')), name='dispatch')
+class TicketDeleteView(View):
     """ Supprimer un ticket avec demande de confirmation """
     template_name = 'critics/ticket_delete.html'
 
@@ -72,7 +76,8 @@ class TicketDeleteView(LoginRequiredMixin, View):
         return redirect('home')
 
 
-class ReviewCreateView(LoginRequiredMixin, View):
+@method_decorator(permission_required('critics.add_review'), name='dispatch')
+class ReviewCreateView(View):
     """ Publier une critique en réponse à un ticket """
     template_name = 'critics/review_create.html'
     form_class = forms.ReviewForm
@@ -97,13 +102,16 @@ class ReviewCreateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context={'form': form, 'ticket': ticket})
 
 
-class ReviewUpdateView(LoginRequiredMixin, View):
+@method_decorator(permission_required('critics.change_review', fn=objectgetter(Review, 'id')), name='dispatch')
+class ReviewUpdateView(View):
     """ Mettre à jour une critique """
     template_name = 'critics/review_create.html'
     form_class = forms.ReviewForm
 
     def get(self, request, id):
         review = Review.objects.get(id=id)
+        if review.user != request.user:
+            return redirect('home')
         form = self.form_class(instance=review)
         messages.info(request, 'Mettre à jour la critique')
         return render(request, self.template_name, context={'form': form, 'ticket': review.ticket})
@@ -119,7 +127,19 @@ class ReviewUpdateView(LoginRequiredMixin, View):
         return render(request, self.template_name, context={'form': form, 'ticket': review.ticket})
 
 
-class TicketReviewCreateView(LoginRequiredMixin, View):
+@permission_required('critics.delete_review', fn=objectgetter(Review, 'id'))
+def review_delete(request, id):
+    """ Supprimer une critique sans confirmation """
+    Review.objects.get(id=id).delete()
+    messages.success(request, 'Critique supprimée')
+    return redirect('home')
+
+
+decorators = [permission_required('critics.add_ticket'), permission_required('critics.add_review')]
+
+
+@method_decorator(decorators, name='dispatch')
+class TicketReviewCreateView(View):
     """ Publier un ticket et une critique (processus unique) """
     template_name = 'critics/ticket_review_create.html'
     form_ticket = forms.TicketForm
@@ -178,14 +198,6 @@ def user_follow_delete(request, id):
     """ Supprimer un abonnement sans confirmation """
     request.user.follows.remove(User.objects.get(id=id))
     messages.success(request, 'Abonnement supprimé')
-    return redirect('home')
-
-
-@login_required
-def review_delete(request, id):
-    """ Supprimer une critique sans confirmation """
-    Review.objects.get(id=id).delete()
-    messages.success(request, 'Critique supprimée')
     return redirect('home')
 
 

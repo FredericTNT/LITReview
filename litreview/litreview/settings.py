@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'rules',
     'authentication',
     'critics',
 ]
@@ -53,6 +54,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'litreview.urls'
+
+AUTHENTICATION_BACKENDS = [
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 TEMPLATES = [
     {
