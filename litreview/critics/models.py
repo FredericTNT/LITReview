@@ -3,6 +3,7 @@ from django.db import models
 from rules.contrib.models import RulesModel
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from PIL import Image
 
 
 @rules.predicate
@@ -27,6 +28,19 @@ class Ticket(RulesModel):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, verbose_name="Photo du livre ou de l'article")
     time_created = models.DateTimeField(auto_now_add=True)
+
+    """ Re-dimensionnement de l'image livre/article via la surcharge de la méthode save """
+    IMAGE_MAX_SIZE = (400, 400)
+
+    def resize_image(self):
+        image = Image.open(self.image)
+        image.thumbnail(self.IMAGE_MAX_SIZE)
+        image.save(self.image.path)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.image:
+            self.resize_image()
 
     def __str__(self):
         return f'{self.id}- {self.title}'
