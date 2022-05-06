@@ -78,6 +78,8 @@ flake8 et flake8-html dans l'environnement virtuel activé :
 ```
 Un rapport index.html est généré dans le sous-répertoire flake8_rapport avec la liste des éventuels points de
 non-conformité.
+
+<img src="/litreview/static/screenshot/Flake8.jpg" alt="PEP8" />
 <!---
 ## FAQs
 -->
