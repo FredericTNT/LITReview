@@ -56,8 +56,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'litreview.urls'
 
 AUTHENTICATION_BACKENDS = [
-    'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'rules.permissions.ObjectPermissionBackend',
 ]
 
 TEMPLATES = [

@@ -46,7 +46,7 @@ class SignupPageView(View):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            login(request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
             messages.success(request, 'Vous êtes connectés !')
             return redirect(settings.LOGIN_REDIRECT_URL)
         messages.warning(request, 'Formulaire incomplet !')
